@@ -166,6 +166,89 @@ input {
 .addBtn:hover {
   background-color: #bbb;
 }
+
+.btn:hover {
+  background-color: #bbb;
+}
+
+.authBtn:hover {
+  background-color: #bbb;
+}
+
+.signBtn:hover {
+  background-color: #bbb;
+}
+
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:17px;
+  opacity: 1;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: rgb(255, 0, 0);
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  background-color: #070707;
+}
 </style>
 </head>
 <body>
@@ -176,14 +259,31 @@ input {
   <span onclick="newElement()" class="addBtn">Add</span>
   <span onclick="Email()" class="btn">Email List to Myself</span>
   <span onclick="Calender()" class="btn">Add List to Google Calendar</span>
-  <span onclick="handleAuthClick()" class="authBtn">Authorize</span>
+  <span onclick="handleAuthClick()" class="authBtn">Sign In</span>
   <span onclick="handleSignoutClick()" class="signBtn">Sign Out</span>
 </div>
 
-<ul id="myUL">
-</ul>
+<button class="open-button" onclick="setReminders()">Set Reminders</button>
 
-<ul id ="myEmail">
+<div class="form-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+    <h1>Reminder </h1>
+
+    <label for="date"><b>Date</b></label>
+    <input type="date" placeholder="Enter Date" name="date" required>
+
+    <label for="startTime"><b>Start Time</b></label>
+    <input type="time" placeholder="Enter Start Time" name="startTime" required>
+    
+    <label for="endTime"><b>End Time</b></label>
+    <input type="time" placeholder="Enter End Time" name="endTime" required>
+
+    <button type="submit" class="btn">Set Reminder</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<ul id="myUL">
 </ul>
 
 <script>
@@ -312,7 +412,6 @@ function handleAuthClick() {
     }
     document.getElementById('signout_button').style.visibility = 'visible';
     document.getElementById('authorize_button').innerText = 'Refresh';
-    await listUpcomingEvents();
   };
 
   if (gapi.client.getToken() === null) {
@@ -339,39 +438,50 @@ function handleSignoutClick() {
   }
 }
 
-/**
- * Print the summary and start datetime/date of the next ten events in
- * the authorized user's calendar. If no events are found an
- * appropriate message is printed.
- */
-async function listUpcomingEvents() {
-  let response;
-  try {
-    const request = {
-      'calendarId': 'primary',
-      'timeMin': (new Date()).toISOString(),
-      'showDeleted': false,
-      'singleEvents': true,
-      'maxResults': 10,
-      'orderBy': 'startTime',
-    };
-    response = await gapi.client.calendar.events.list(request);
-  } catch (err) {
-    document.getElementById('content').innerText = err.message;
-    return;
-  }
-
-  const events = response.result.items;
-  if (!events || events.length == 0) {
-    document.getElementById('content').innerText = 'No events found.';
-    return;
-  }
-  // Flatten to string to display
-  const output = events.reduce(
-    (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
-    'Events:\n');
-  document.getElementById('content').innerText = output;
+function setReminders() {
+  document.getElementById("myForm").style.display = "block";
 }
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
+const event = {
+  'summary': 'Google I/O 2015',
+  'location': '800 Howard St., San Francisco, CA 94103',
+  'description': 'A chance to hear more about Google\'s developer products.',
+  'start': {
+    'dateTime': '2015-05-28T09:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'end': {
+    'dateTime': '2015-05-28T17:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'recurrence': [
+    'RRULE:FREQ=DAILY;COUNT=2'
+  ],
+  'attendees': [
+    {'email': 'lpage@example.com'},
+    {'email': 'sbrin@example.com'}
+  ],
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'popup', 'minutes': 30}
+    ]
+  }
+};
+
+const request = gapi.client.calendar.events.insert({
+  'calendarId': 'primary',
+  'resource': event
+});
+
+request.execute(function(event) {
+  appendPre('Event created: ' + event.htmlLink);
+});
+
 </script>
 
 <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
