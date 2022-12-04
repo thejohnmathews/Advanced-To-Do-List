@@ -214,7 +214,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
+.form-container input[type=date], .form-container input[type=date] {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -223,7 +223,22 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+.form-container input[type=date]:focus, .form-container input[type=date]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Full-width input fields */
+.form-container input[type=time], .form-container input[type=time] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=time]:focus, .form-container input[type=time]:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -266,19 +281,19 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <button class="open-button" onclick="setReminders()">Set Reminders</button>
 
 <div class="form-popup" id="myForm">
-  <form action="/action_page.php" class="form-container">
+  <form class="form-container">
     <h1>Reminder </h1>
 
-    <label for="date"><b>Date</b></label>
-    <input type="date" placeholder="Enter Date" name="date" required>
+    <label id="eventDate"><b>Date</b></label>
+    <input type="date" placeholder="Enter Date" name="ate" required>
 
-    <label for="startTime"><b>Start Time</b></label>
+    <label id="startTime"><b>Start Time</b></label>
     <input type="time" placeholder="Enter Start Time" name="startTime" required>
     
-    <label for="endTime"><b>End Time</b></label>
+    <label id="endTime"><b>End Time</b></label>
     <input type="time" placeholder="Enter End Time" name="endTime" required>
 
-    <button type="submit" class="btn">Set Reminder</button>
+    <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
   </form>
 </div>
@@ -446,32 +461,27 @@ function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
 
-const event = {
-  'summary': 'Google I/O 2015',
-  'location': '800 Howard St., San Francisco, CA 94103',
-  'description': 'A chance to hear more about Google\'s developer products.',
-  'start': {
-    'dateTime': '2015-05-28T09:00:00-07:00',
-    'timeZone': 'America/Los_Angeles'
-  },
-  'end': {
-    'dateTime': '2015-05-28T17:00:00-07:00',
-    'timeZone': 'America/Los_Angeles'
-  },
-  'recurrence': [
-    'RRULE:FREQ=DAILY;COUNT=2'
-  ],
-  'attendees': [
-    {'email': 'lpage@example.com'},
-    {'email': 'sbrin@example.com'}
-  ],
-  'reminders': {
-    'useDefault': false,
-    'overrides': [
-      {'method': 'popup', 'minutes': 30}
-    ]
-  }
-};
+function setInfo() {
+  event = {
+    'summary': 'Google I/O 2015',
+    'start': {
+      'dateTime': 'eventDate'+'T09:00:'+'startTime'+':00',
+      'timeZone': 'America/Los_Angeles'
+    },
+    'end': {
+      'dateTime': 'eventDate'+'T09:00:'+'endTime'+':00',
+      'timeZone': 'America/Los_Angeles'
+    },
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'popup', 'minutes': 30}
+      ]
+    }
+  };
+
+  request.execute(event)
+}
 
 const request = gapi.client.calendar.events.insert({
   'calendarId': 'primary',
