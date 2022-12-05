@@ -164,7 +164,6 @@ function handleAuthClick() {
     }
     document.getElementById('signout_button').style.visibility = 'visible';
     document.getElementById('authorize_button').innerText = 'Refresh';
-    await listUpcomingEvents();
   };
 
   if (gapi.client.getToken() === null) {
@@ -204,15 +203,17 @@ function setInfo() {
 
   var myNodelist = document.getElementsByTagName("LI");
   var i;
-  for (i = 0; i < myNodelist.length; i++) { 
+
     var event = {
-      'summary': 'boogie',
+      'summary': 'Google I/O 2015',
+      'location': '800 Howard St., San Francisco, CA 94103',
+      'description': 'A chance to hear more about Google\'s developer products.',
       'start': {
-        'dateTime': 'eventDate'+'T09:00:'+'startTime'+':00',
+        'dateTime': '2022-12-06T09:00:00-07:00',
         'timeZone': 'America/Los_Angeles'
       },
       'end': {
-        'dateTime': 'eventDate'+'T09:00:'+'endTime'+':00',
+        'dateTime': '2022-12-06T17:00:00-08:00',
         'timeZone': 'America/Los_Angeles'
       }
     }
@@ -225,40 +226,10 @@ function setInfo() {
     request.execute(function(event) {
       appendPre('Event created: ' + event.htmlLink);
     });
-  }
 }
 
 function email() {
 
-}
-
-async function listUpcomingEvents() {
-  let response;
-  try {
-    const request = {
-      'calendarId': 'primary',
-      'timeMin': (new Date()).toISOString(),
-      'showDeleted': false,
-      'singleEvents': true,
-      'maxResults': 10,
-      'orderBy': 'startTime',
-    };
-    response = await gapi.client.calendar.events.list(request);
-  } catch (err) {
-    document.getElementById('content').innerText = err.message;
-    return;
-  }
-
-  const events = response.result.items;
-  if (!events || events.length == 0) {
-    document.getElementById('content').innerText = 'No events found.';
-    return;
-  }
-  // Flatten to string to display
-  const output = events.reduce(
-      (str, event) => `${str}${event.summary} (${event.start.dateTime || event.start.date})\n`,
-      'Events:\n');
-  document.getElementById('content').innerText = output;
 }
 
 </script>
