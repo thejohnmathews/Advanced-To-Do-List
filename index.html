@@ -96,20 +96,34 @@ function newElement() {
   }
 }
 
+const CLIENT_ID = '781836865831-93nsq1d2ekmmal00g3bm454r5e5ssb5s.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyCIH7ts88Bl3lN0zdOJs6fHY0jeR6f-KLI';
+
+// Discovery doc URL for APIs used by the quickstart
+const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
 document.getElementById('authorize_button').style.visibility = 'hidden';
 document.getElementById('signout_button').style.visibility = 'hidden';
 
 /**
- * Callback after api.js is loaded.
- */
+* Callback after api.js is loaded.
+*/
 function gapiLoaded() {
   gapi.load('client', initializeGapiClient);
 }
 
 /**
- * Callback after the API client is loaded. Loads the
- * discovery doc to initialize the API.
- */
+* Callback after the API client is loaded. Loads the
+* discovery doc to initialize the API.
+*/
 async function initializeGapiClient() {
   await gapi.client.init({
     apiKey: API_KEY,
@@ -127,7 +141,7 @@ function gisLoaded() {
     client_id: CLIENT_ID,
     scope: SCOPES,
     callback: '', // defined later
-  });
+    });
   gisInited = true;
   maybeEnableButtons();
 }
@@ -151,7 +165,6 @@ function handleAuthClick() {
     }
     document.getElementById('signout_button').style.visibility = 'visible';
     document.getElementById('authorize_button').innerText = 'Refresh';
-    await listLabels();
   };
 
   if (gapi.client.getToken() === null) {
@@ -178,31 +191,44 @@ function handleSignoutClick() {
   }
 }
 
-/**
- * Print all Labels in the authorized user's inbox. If no labels
- * are found an appropriate message is printed.
- */
-async function listLabels() {
-  let response;
-  try {
-    response = await gapi.client.gmail.users.labels.list({
-      'userId': 'me',
-    });
-  } catch (err) {
-    document.getElementById('content').innerText = err.message;
-    return;
-  }
-  const labels = response.result.labels;
-  if (!labels || labels.length == 0) {
-    document.getElementById('content').innerText = 'No labels found.';
-    return;
-  }
-  // Flatten to string to display
-  const output = labels.reduce(
-      (str, label) => `${str}${label.name}\n`,
-      'Labels:\n');
-  document.getElementById('content').innerText = output;
+function setReminders() {
+  document.getElementById("myForm").style.display = "block";
 }
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
+function setInfo() {
+  event = {
+    'summary': 'Google I/O 2015',
+    'start': {
+      'dateTime': 'eventDate'+'T09:00:'+'startTime'+':00',
+      'timeZone': 'America/Los_Angeles'
+    },
+    'end': {
+      'dateTime': 'eventDate'+'T09:00:'+'endTime'+':00',
+      'timeZone': 'America/Los_Angeles'
+    },
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'popup', 'minutes': 30}
+      ]
+    }
+  };
+
+  request.execute(event)
+}
+
+const request = gapi.client.calendar.events.insert({
+  'calendarId': 'primary',
+  'resource': event
+});
+
+request.execute(function(event) {
+  appendPre('Event created: ' + event.htmlLink);
+});
 
 </script>
   <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
