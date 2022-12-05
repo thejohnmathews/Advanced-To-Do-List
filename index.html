@@ -1,270 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  margin: 0;
-  min-width: 250px;
-}
-
-/* Include the padding and border in an element's total width and height */
-* {
-  box-sizing: border-box;
-}
-
-/* Remove margins and padding from the list */
-ul {
-  margin: 0;
-  padding: 0;
-}
-
-/* Style the list items */
-ul li {
-  cursor: pointer;
-  position: relative;
-  padding: 12px 8px 12px 40px;
-  list-style-type: none;
-  background: #eee;
-  font-size: 18px;
-  transition: 0.2s;
-  
-  /* make the list items unselectable */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Set all odd list items to a different color (zebra-stripes) */
-ul li:nth-child(odd) {
-  background: #f9f9f9;
-}
-
-/* Darker background-color on hover */
-ul li:hover {
-  background: #ddd;
-}
-
-/* When clicked on, add a background color and strike out text */
-ul li.checked {
-  background: #888;
-  color: #fff;
-  text-decoration: line-through;
-}
-
-/* Add a "checked" mark when clicked on */
-ul li.checked::before {
-  content: '';
-  position: absolute;
-  border-color: #fff;
-  border-style: solid;
-  border-width: 0 2px 2px 0;
-  top: 10px;
-  left: 16px;
-  transform: rotate(45deg);
-  height: 15px;
-  width: 7px;
-}
-
-/* Style the close button */
-.close {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 12px 16px 12px 16px;
-}
-
-.close:hover {
-  background-color: #070707;
-  color: white;
-}
-
-/* Style the header */
-.header {
-  background-color: #070707;
-  padding: 30px 40px;
-  color: white;
-  text-align: center;
-}
-
-/* Clear floats after the header */
-.header:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Style the input */
-input {
-  margin: 0;
-  border: none;
-  border-radius: 0;
-  width: 75%;
-  padding: 10px;
-  float: left;
-  font-size: 16px;
-}
-
-/* Style the "Add" button */
-.addBtn {
-  padding: 10px;
-  width: 25%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 0;
-}
-
-.btn {
-  padding: 10px;
-  width: 100%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 0;
-  margin-top: 1rem;
-}
-
-.authBtn {
-  padding: 10px;
-  width: 49%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 0;
-  margin-top: 1rem;
-  margin-right: 2.3rem;
-}
-
-.signBtn {
-  padding: 10px;
-  width: 49%;
-  background: #d9d9d9;
-  color: #555;
-  float: left;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-  border-radius: 0;
-  margin-top: 1rem;
-}
-
-.addBtn:hover {
-  background-color: #bbb;
-}
-
-.btn:hover {
-  background-color: #bbb;
-}
-
-.authBtn:hover {
-  background-color: #bbb;
-}
-
-.signBtn:hover {
-  background-color: #bbb;
-}
-
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
-
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 1;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-}
-
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-.form-container input[type=date], .form-container input[type=date] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=date]:focus, .form-container input[type=date]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Full-width input fields */
-.form-container input[type=time], .form-container input[type=time] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=time]:focus, .form-container input[type=time]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:17px;
-  opacity: 1;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: rgb(255, 0, 0);
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  background-color: #070707;
-}
-</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel = "stylesheet" href="styling.css">
 </head>
 <body>
 
@@ -362,11 +100,11 @@ const CLIENT_ID = '781836865831-93nsq1d2ekmmal00g3bm454r5e5ssb5s.apps.googleuser
 const API_KEY = 'AIzaSyCIH7ts88Bl3lN0zdOJs6fHY0jeR6f-KLI';
 
 // Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest';
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
 
 let tokenClient;
 let gapiInited = false;
@@ -453,6 +191,15 @@ function handleSignoutClick() {
   }
 }
 
+const request = gapi.client.calendar.events.insert({
+  'calendarId': 'primary',
+  'resource': event
+});
+
+request.execute(function(event) {
+  appendPre('Event created: ' + event.htmlLink);
+});
+
 function setReminders() {
   document.getElementById("myForm").style.display = "block";
 }
@@ -483,19 +230,8 @@ function setInfo() {
   request.execute(event)
 }
 
-const request = gapi.client.calendar.events.insert({
-  'calendarId': 'primary',
-  'resource': event
-});
-
-request.execute(function(event) {
-  appendPre('Event created: ' + event.htmlLink);
-});
-
 </script>
-
-<script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-<script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
-
+  <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+  <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
 </body>
 </html>
