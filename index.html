@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel = "stylesheet" href="styling.css">
   <meta charset="utf-8" />
+  <script src="https://apis.google.com/js/api.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -99,7 +100,7 @@ const CLIENT_ID = '781836865831-93nsq1d2ekmmal00g3bm454r5e5ssb5s.apps.googleuser
 const API_KEY = 'AIzaSyCIH7ts88Bl3lN0zdOJs6fHY0jeR6f-KLI';
 
 // Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest';
+const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
@@ -199,26 +200,42 @@ function closeForm() {
 }
 
 function setInfo() {
+  gapi.load('client:augth2', () => {
+    console.log('loaded client')
 
-  var event = {
-    'summary': 'Google I/O 2015',
-    'location': '800 Howard St., San Francisco, CA 94103',
-    'description': 'A chance to hear more about Google\'s developer products.',
-    'start': {
-      'dateTime': '2022-12-06T09:00:00-07:00',
-      'timeZone': 'America/Los_Angeles'
-    },
-    'end': {
-      'dateTime': '2022-12-06T17:00:00-08:00',
-      'timeZone': 'America/Los_Angeles'
-    }
-  }
+    gapi.client.init({
+      apiKey: API_KEY,
+      client_id: CLIENT_ID,
+      discoveryDocs: DISCOVERY_DOCS,
+      scope: SCOPES,
+    })
+  
+    gapi.client.load('calendar', 'v3', () => console.log('bam!'))
+    .then(() => {
+      var event = {
+        'summary': 'Google I/O 2015',
+        'location': '800 Howard St., San Francisco, CA 94103',
+        'description': 'A chance to hear more about Google\'s developer products.',
+        'start': {
+          'dateTime': '2022-12-06T09:00:00-07:00',
+          'timeZone': 'America/Los_Angeles'
+        },
+        'end': {
+          'dateTime': '2022-12-06T17:00:00-08:00',
+          'timeZone': 'America/Los_Angeles'
+        }
+      }
+    })
 
-  var request = gapi.client.calendar.events.insert({'calendarId': 'primary', 'resource': event });
+    var request = gapi.client.calendar.events.insert({
+      'calendarId': 'primary', 'resource': event 
+    });
 
-  request.execute(function(event) {
-    appendPre('Event created: ' + event.htmlLink);
-  });
+    request.execute(event => {
+      window.open(event.htmlLink);
+    });
+
+  })
 }
 
 function email() {
