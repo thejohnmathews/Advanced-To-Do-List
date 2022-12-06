@@ -18,33 +18,19 @@
 
     <!-- Header of the application -->
     <div id="myDIV" class="header">
+
       <h2 style="margin:5px">Advanced To-Do List!</h2>
       <input type="text" id="myInput" placeholder="Title...">
+
       <span onclick="newElement()" class="addBtn">Add</span>
-      <span onclick="sendEmail()" class="btn">Email List to Myself</span>
-      <span onclick="setReminders()" class="btn">Add List to Google Calendar</span>
-      <span onclick="handleAuthClick()" class="authBtn">Sign In</span>
-      <span onclick="handleSignoutClick()" class="signBtn">Sign Out</span>
+      <button id="authorize_button" class = "btn" onclick="handleAuthClick()">Authorize</button>
+      <span onclick="newElement()" class="btn">Add List to Google Calendar</span>
+      <button id="email_btn" class = "btn" onclick="sendEmail()">Email List to Myself</button>
     </div>
 
-    <div class="form-popup" id="myForm">
-      <form class="form-container">
-        <h1>Reminder </h1>
-
-        <label id="eventDate"><b>Date</b></label>
-        <input type="date" placeholder="Enter Date" name="eventDate" id="eventDate" required>
-
-        <label id="startTime"><b>Start Time</b></label>
-        <input type="time" placeholder="Enter Start Time" name="startTime" id="startTime" required>
-
-        <label id="endTime"><b>End Time</b></label>
-        <input type="time" placeholder="Enter End Time" name="endTime" id="endTime" required>
-
-        <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
-      </form>
-    </div>
-
-    <ul id="myUL">
+    <!-- List that holds new tasks-->
+    <ul id = "myUL">
+      
     </ul>
     
     <!-- This is the JavaScript to implement APIs/button functionality-->
@@ -120,28 +106,31 @@
         }
       }
 
-      function setReminders() {
-        document.getElementById("myForm").style.display = "block";
-      }
-
-      function closeForm() {
-        document.getElementById("myForm").style.display = "none";
-      }
-
       //-----------------------------------------------------------------
-      //                      GOOGLE GMAIL API BELOW
+      //                      GOOGLE GMAIL API BELOW - John
       //-----------------------------------------------------------------
       
       //sendEmail(): sends an email to the user containing the to do list tasks
       function sendEmail() {
 
         //set email metadata from list
-        var to = 'mmmcclu@g.clemson.edu';
-        var subject = 'api';
-        var body = 'hello world';
+        var to = 'mathew7@g.clemson.edu';
+        var subject = 'Advanced To-Do List Tasks';
+        var body = 'Here are your tasks from Advanced To-Do List!\n\n';
 
         //to do: loop through item list and put tasks into message body
-        
+        var list = document.getElementById("myUL");
+        var items = Array.from(list.children)
+        for (var i = 0; i < items.length; i++){
+          
+          //format tasks in email
+          body += (i + 1) + ") ";
+          body += items[i].innerText;
+          body += "\n";
+          
+          //this gets rid of a unicode character that is being annoying
+          body = body.replace("\u00D7", "");
+        }
 
         //create an instance of the api
         var client = new gapi.client.gmail.users.messages.send({
@@ -152,10 +141,13 @@
           }
         });
 
-          //send the message and handle callback function
-          client.execute(function (response) {
-            console.log(response);
-          });
+        //send the message and handle callback function
+        client.execute(function (response) {
+          console.log(response);
+        });
+          
+        //tell user that the email has been sent
+        alert("An email has been sent to your inbox.")
       }
       
       //createMessage(): cerates the actual message sent to user & encodes it
@@ -172,42 +164,14 @@
 
           return btoa(str).replace(/\+/g, '-').replace(/\//g, '_');
         }
-        
-      //-----------------------------------------------------------------
-      //                      GOOGLE CALENDAR API BELOW
-      //-----------------------------------------------------------------
-
-        function setInfo() {
-          var start = document.getElementById('startTime').value;
-          var end = document.getElementById('endTime').value;
-        
-          var event = {
-            'summary': 'Boogie',
-            'start': {
-              'dateTime': start
-            },
-            'end': {
-              'dateTime': end
-            }
-          };
-
-          var calendar = gapi.client.calendar.events.insert({
-            'calendarId': 'primary',
-            'resource': event
-          });
-
-          calendar.execute(function (response) {
-            console.log(response);
-          });
-        }
 
       //-----------------------------------------------------------------
       //            GOOGLE API AUTHENTIFICATION BELOW
       //-----------------------------------------------------------------
     
       // TODO(developer): Set to client ID and API key from the Developer Console
-      const CLIENT_ID = '781836865831-93nsq1d2ekmmal00g3bm454r5e5ssb5s.apps.googleusercontent.com';
-      const API_KEY = 'AIzaSyCIH7ts88Bl3lN0zdOJs6fHY0jeR6f-KLI';
+      const CLIENT_ID = '305697776658-fkv3snta24o9o9uffgakomav86f7dqvh.apps.googleusercontent.com';
+      const API_KEY = 'AIzaSyCXDgPMOYRdMSs41_uP0WaVerIbGvXhvVg';
 
       // Discovery doc URL for APIs used by the quickstart
       const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest';
