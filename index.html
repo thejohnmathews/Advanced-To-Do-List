@@ -172,26 +172,27 @@
         function setInfo() {
           var start = document.getElementById('startTime').value;
           var end = document.getElementById('endTime').value;
+        
+
+          var event = {
+            'summary': 'Boogie',
+            'start': {
+              'dateTime': start
+            },
+            'end': {
+              'dateTime': end
+            }
+          };
+
+          var calendar = gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': event
+          });
+
+          calendar.execute(function (response) {
+            console.log(response)
+          });
         }
-
-        var event = {
-          'summary': 'Boogie',
-          'start': {
-            'dateTime': start
-          },
-          'end': {
-            'dateTime': end
-          }
-        };
-
-        var calendar = gapi.client.calendar.events.insert({
-          'calendarId': 'primary',
-          'resource': event
-        });
-
-        calendar.execute(function (response) {
-          console.log(response)
-        });
 
       //-----------------------------------------------------------------
       //            GOOGLE API AUTHENTIFICATION BELOW
