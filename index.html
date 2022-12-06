@@ -22,7 +22,7 @@
       <input type="text" id="myInput" placeholder="Title...">
       <span onclick="newElement()" class="addBtn">Add</span>
       <span onclick="email()" class="btn">Email List to Myself</span>
-      <span onclick="setInfo()" class="btn">Add List to Google Calendar</span>
+      <span onclick="setReminders()" class="btn">Add List to Google Calendar</span>
       <span onclick="handleAuthClick()" class="authBtn">Sign In</span>
       <span onclick="handleSignoutClick()" class="signBtn">Sign Out</span>
     </div>
@@ -118,6 +118,14 @@
             div.style.display = "none";
           }
         }
+      }
+
+      function setReminders() {
+        document.getElementById("myForm").style.display = "block";
+      }
+
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
       }
 
       //-----------------------------------------------------------------
