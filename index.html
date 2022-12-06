@@ -18,19 +18,34 @@
 
     <!-- Header of the application -->
     <div id="myDIV" class="header">
-
       <h2 style="margin:5px">Advanced To-Do List!</h2>
       <input type="text" id="myInput" placeholder="Title...">
-
       <span onclick="newElement()" class="addBtn">Add</span>
-      <button id="authorize_button" class = "btn" onclick="handleAuthClick()">Authorize</button>
-      <span onclick="newElement()" class="btn">Add List to Google Calendar</span>
-      <button id="email_btn" class = "btn" onclick="sendEmail()">Email List to Myself</button>
+      <span onclick="email()" class="btn">Email List to Myself</span>
+      <span onclick="setInfo()" class="btn">Add List to Google Calendar</span>
+      <span onclick="handleAuthClick()" class="authBtn">Sign In</span>
+      <span onclick="handleSignoutClick()" class="signBtn">Sign Out</span>
     </div>
 
-    <!-- List that holds new tasks-->
+    <div class="form-popup" id="myForm">
+      <form class="form-container">
+        <h1>Reminder </h1>
+
+        <label id="eventDate"><b>Date</b></label>
+        <input type="date" placeholder="Enter Date" name="eventDate" required>
+
+        <label id="startTime"><b>Start Time</b></label>
+        <input type="time" placeholder="Enter Start Time" name="startTime" required>
+
+        <label id="endTime"><b>End Time</b></label>
+        <input type="time" placeholder="Enter End Time" name="endTime" required>
+
+        <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      </form>
+    </div>
+
     <ul id="myUL">
-      
     </ul>
     
     <!-- This is the JavaScript to implement APIs/button functionality-->
