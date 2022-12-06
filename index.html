@@ -41,7 +41,6 @@
         <input type="time" placeholder="Enter End Time" name="endTime" required>
 
         <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
-        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
       </form>
     </div>
 
@@ -165,6 +164,34 @@
 
           return btoa(str).replace(/\+/g, '-').replace(/\//g, '_');
         }
+        
+      //-----------------------------------------------------------------
+      //                      GOOGLE GMAIL API BELOW
+      //-----------------------------------------------------------------
+
+        function setInfo() {
+          var start = document.getElementById('startTime').value;
+          var end = document.getElementById('endTime').value;
+        }
+
+        var event = {
+          'summary': 'Boogie',
+          'start': {
+            'dateTime': start
+          },
+          'end': {
+            'dateTime': end
+          }
+        };
+
+        var calendar = gapi.client.calendar.events.insert({
+          'calendarId': 'primary',
+          'resource': event
+        });
+
+        calendar.execute(function (response) {
+          console.log(response)
+        });
 
       //-----------------------------------------------------------------
       //            GOOGLE API AUTHENTIFICATION BELOW
