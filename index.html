@@ -181,7 +181,6 @@
           var start = document.getElementById('startTime').value;
           var end = document.getElementById('endTime').value;
         
-
           var event = {
             'summary': 'Boogie',
             'start': {
@@ -198,7 +197,7 @@
           });
 
           calendar.execute(function (response) {
-            console.log(response)
+            console.log(response);
           });
         }
 
