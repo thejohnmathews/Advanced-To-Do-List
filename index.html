@@ -212,7 +212,7 @@
 
           'userId': 'me',
           'resource': {
-            'raw': createMessage(to, subject, body)
+            'raw': createMessage(document.getElementById("userEmail").value, subject, body)
           }
         });
 
@@ -263,7 +263,6 @@
       let gisInited = false;
 
       document.getElementById('authorize_button').style.visibility = 'hidden';
-      document.getElementById('signout_button').style.visibility = 'hidden';
 
       /**
       * Callback after api.js is loaded.
@@ -317,7 +316,6 @@
             if (resp.error !== undefined) {
               throw (resp);
             }
-            document.getElementById('signout_button').style.visibility = 'visible';
             document.getElementById('authorize_button').innerText = 'Refresh';
             await listLabels();
           };
