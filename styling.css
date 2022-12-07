@@ -259,3 +259,21 @@ body {font-family: Arial, Helvetica, sans-serif;}
 .form-container .btn:hover, .open-button:hover {
   background-color: #070707;
 }
+
+.time {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  font-size: 20px;
+  color:rgba(255, 255, 255, 0.854);
+  background-color: #000000;
+  
+}
+.weatherDesc {
+  font-size: 18px;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  background-color:#000000;
+  color:rgb(255, 255, 255);
+}

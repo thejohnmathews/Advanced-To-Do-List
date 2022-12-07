@@ -7,15 +7,20 @@
 
   <!-- This contains the metadata for the project-->
   <head>
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel = "stylesheet" href="styling.css">
-    
   </head>
 
+  <body onload="updateTime()">
 
-  <body>
-
+    <!-- list weather and time information-->>
+    <div>
+      <div id="current_time" class="time"></div>
+      <div id="location" class="weatherDesc"></div>
+      <div id="description" class="weatherDesc"></div>
+      <div id="temp" class="weatherDesc"></div>
+    </div>
+    
     <!-- Header of the application -->
     <div id="myDIV" class="header">
       <h2 style="margin:5px">Advanced To-Do List!</h2>
@@ -28,29 +33,27 @@
 
     <!-- pop up form for Google Calendar API-->
     <div class="form-popup" id="myForm">
-      <h1>Reminder </h1>
+        <h1>Reminder </h1>
 
-      <label id="eventDate_L"><b>Date</b></label>
-      <input type="date" placeholder="Enter Date" name="eventDate" id="eventDate" required>
+        <label id="eventDate_L"><b>Date</b></label>
+        <input type="date" placeholder="Enter Date" name="eventDate" id="eventDate" required>
 
-      <label id="startTime_L"><b>Start Time</b></label>
-      <input type="time" placeholder="Enter Start Time" name="startTime" id="startTime" required>
+        <label id="startTime_L"><b>Start Time</b></label>
+        <input type="time" placeholder="Enter Start Time" name="startTime" id="startTime" required>
 
-      <label id="endTime_L"><b>End Time</b></label>
-      <input type="time" placeholder="Enter End Time" name="endTime" id="endTime" required>
+        <label id="endTime_L"><b>End Time</b></label>
+        <input type="time" placeholder="Enter End Time" name="endTime" id="endTime" required>
 
-      <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
-      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </div>
 
     <!-- pop up form for email address -->
     <div class="form-popup" id="emailForm">
-
         <h1>Enter Email Address </h1>
         <input type="text" placeholder="Enter Email" name="userEmail" id="userEmail" required>
         <button type="submit" class="btn" onclick="sendEmail()">Send Email</button>
         <button type="button" class="btn cancel" onclick="closeEmailForm()">Close</button>
-
     </div>
 
     <!-- List that holds new tasks-->
@@ -62,7 +65,7 @@
     <script>
 
       //-----------------------------------------------------------------
-      //                 TO-DO LIST FUNCTIONALITY BELOW
+      //                 TO-DO LIST FUNCTIONALITY BELOW - W3School's
       //-----------------------------------------------------------------
 
       // Create a "close" button and append it to each list item
@@ -132,10 +135,84 @@
       }
 
       //-----------------------------------------------------------------
+      //                      WEATHER AND TIME API - MARCUS
+      //-----------------------------------------------------------------
+      //-----------------------------------------------------------------
+      //                      WEATHER AND TIME API - MARCUS
+      //-----------------------------------------------------------------
+      function displayWeather(){
+        var apiKey = "bd4dd3659e3dbe812da9c4d312b61acb";
+        if (navigator.geolocation) {
+          // Get the user's current position
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            // Make a request to the OpenWeatherAPI server
+            var request = new XMLHttpRequest();
+            var url = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+
+            request.onreadystatechange = function() {
+              if (this.readyState === 4 && this.status === 200) {
+                var response = JSON.parse(this.responseText);
+                var weather = response.weather[0].description;
+                var weahterFirst = weather.charAt(0).toUpperCase() + weather.slice(1);
+                celcius = Math.round(parseFloat(response.main.temp)-273.15);
+                //var weatherString = "The current temperature is " + temperature + " degrees. The weather is currently " + weather + ".";
+                document.getElementById("description").innerHTML = "" + weahterFirst;
+                document.getElementById("temp").innerHTML = celcius +'&deg;'+" C";
+                document.getElementById('location').innerHTML = response.name;
+              }
+            };
+
+            request.open("GET", url, true);
+            request.send();
+          });
+        } else {
+          // If the Geolocation API is not supported by the browser, display an error message
+          document.getElementById("description").innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      //Will call the functions when the windo is first loaded.
+      window.onload = function() {
+        updateTime();
+        displayWeather();
+      }
+
+      //Displayh the current time and update every second.
+      function updateTime() {
+          var time = (new Date()).toLocaleString({
+            hour12: true,
+          });
+          
+          document.getElementById('current_time').innerHTML = time;
+          
+          requestAnimationFrame(updateTime);
+      }
+      //Will call the functions when the windo is first loaded.
+      window.onload = function() {
+        updateTime();
+        displayWeather();
+      }
+
+      //Displayh the current time and update every second.
+      function updateTime() {
+          var time = (new Date()).toLocaleString({
+            hour12: true,
+          });
+          
+          document.getElementById('current_time').innerHTML = time;
+          
+          requestAnimationFrame(updateTime);
+      }
+
+      //-----------------------------------------------------------------
       //                      GOOGLE CALENDAR API BELOW - Morgan
       //-----------------------------------------------------------------
 
       function setInfo() {
+        var date = document.getElementById('eventDate').value;
         var start = document.getElementById('startTime').value;
         var end = document.getElementById('endTime').value;
 
@@ -143,14 +220,14 @@
         var items = Array.from(list.children)
         for (var i = 0; i < items.length; i++){
           var event = {
-            'summary': 'Boogie',
+            'summary': items[i].innerText,
             'start': {
-              'dateTime': '2022-12-08T09:00:00-07:00',
-              'timeZone': 'America/Los_Angeles'
+              'dateTime': date+'T05:00:00-'+start,
+              'timeZone': 'America/New_York'
             },
             'end': {
-              'dateTime': '2022-12-08T09:00:00-07:00',
-              'timeZone': 'America/Los_Angeles'
+              'dateTime': date+'T05:00:00-'+end,
+              'timeZone': 'America/New_York'
             }
           };
 
@@ -159,11 +236,11 @@
             'resource': event
           });
 
-          request.execute(function(event) {
-            appendPre('Event created: ' + event.htmlLink);
+          calendar.execute(function (response) {
+            console.log(response);
           });
         }
-
+      
         alert("Event has been added to your Google Calendar.")
       }
 
@@ -173,14 +250,6 @@
 
       function closeForm() {
         document.getElementById("myForm").style.display = "none";
-      }
-
-      function setEmail() {
-        document.getElementById("emailForm").style.display = "block";
-      }
-
-      function closeEmailForm() {
-        document.getElementById("emailForm").style.display = "none";
       }
       
       //-----------------------------------------------------------------
@@ -242,6 +311,14 @@
           return btoa(str).replace(/\+/g, '-').replace(/\//g, '_');
         }
 
+        function setEmail() {
+          document.getElementById("emailForm").style.display = "block";
+        }
+
+        function closeEmailForm() {
+          document.getElementById("emailForm").style.display = "none";
+        }
+
       //-----------------------------------------------------------------
       //            GOOGLE API AUTHENTIFICATION BELOW
       //-----------------------------------------------------------------
@@ -251,20 +328,21 @@
       const API_KEY = 'AIzaSyCowAiGLYm58qnpOqlZaJqT-xW6VHrF71M';
 
       // Discovery doc URL for APIs used by the quickstart
-      const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest';
+      const DISCOVERY_DOC = ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest', 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
 
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 
+      const SCOPES =
+      'https://www.googleapis.com/auth/calendar ' + 
       'https://www.googleapis.com/auth/gmail.readonly ' + 
-      'https://www.googleapis.com/auth/gmail.send ' + 
-      'https://www.googleapis.com/auth/calendar'
+      'https://www.googleapis.com/auth/gmail.send'
 
       let tokenClient;
       let gapiInited = false;
       let gisInited = false;
 
       document.getElementById('authorize_button').style.visibility = 'hidden';
+      document.getElementById('signout_button').style.visibility = 'hidden';
 
       /**
       * Callback after api.js is loaded.
@@ -281,7 +359,7 @@
 
         await gapi.client.init({
           apiKey: API_KEY,
-          discoveryDocs: [DISCOVERY_DOC],
+          discoveryDocs: [DISCOVERY_DOC[0], DISCOVERY_DOC[1]],
         });
 
         gapiInited = true;
@@ -318,6 +396,7 @@
             if (resp.error !== undefined) {
               throw (resp);
             }
+            document.getElementById('signout_button').style.visibility = 'visible';
             document.getElementById('authorize_button').innerText = 'Refresh';
             await listLabels();
           };
