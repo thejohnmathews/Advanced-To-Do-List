@@ -138,20 +138,19 @@
       function setInfo() {
         var start = document.getElementById('startTime').value;
         var end = document.getElementById('endTime').value;
-        var calBody = "";
 
         var list = document.getElementById("myUL");
         var items = Array.from(list.children)
         for (var i = 0; i < items.length; i++){
-          calBody = "";
-          calBody += items[i].innerText;
           var event = {
-            'summary': calBody,
+            'summary': 'Boogie',
             'start': {
-              'dateTime': start
+              'dateTime': '2022-12-8T09:00:00-07:00',
+              'timeZone': 'America/Los_Angeles'
             },
             'end': {
-              'dateTime': end
+              'dateTime': '2022-12-8T09:00:00-07:00',
+              'timeZone': 'America/Los_Angeles'
             }
           };
 
