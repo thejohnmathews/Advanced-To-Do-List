@@ -159,8 +159,8 @@
             'resource': event
           });
 
-          calendar.execute(function (response) {
-          console.log(response);
+          request.execute(function(event) {
+            appendPre('Event created: ' + event.htmlLink);
           });
         }
 
