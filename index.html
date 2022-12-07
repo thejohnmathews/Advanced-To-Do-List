@@ -28,19 +28,19 @@
 
     <!-- pop up form for Google Calendar API-->
     <div class="form-popup" id="myForm">
-        <h1>Reminder </h1>
+      <h1>Reminder </h1>
 
-        <label id="eventDate_L"><b>Date</b></label>
-        <input type="date" placeholder="Enter Date" name="eventDate" id="eventDate" required>
+      <label id="eventDate_L"><b>Date</b></label>
+      <input type="date" placeholder="Enter Date" name="eventDate" id="eventDate" required>
 
-        <label id="startTime_L"><b>Start Time</b></label>
-        <input type="time" placeholder="Enter Start Time" name="startTime" id="startTime" required>
+      <label id="startTime_L"><b>Start Time</b></label>
+      <input type="time" placeholder="Enter Start Time" name="startTime" id="startTime" required>
 
-        <label id="endTime_L"><b>End Time</b></label>
-        <input type="time" placeholder="Enter End Time" name="endTime" id="endTime" required>
+      <label id="endTime_L"><b>End Time</b></label>
+      <input type="time" placeholder="Enter End Time" name="endTime" id="endTime" required>
 
-        <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
-        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      <button type="submit" class="btn" onclick="setInfo()">Set Reminder</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </div>
 
     <!-- pop up form for email address -->
@@ -138,12 +138,15 @@
       function setInfo() {
         var start = document.getElementById('startTime').value;
         var end = document.getElementById('endTime').value;
+        var calBody = "";
 
         var list = document.getElementById("myUL");
         var items = Array.from(list.children)
         for (var i = 0; i < items.length; i++){
+          calBody = "";
+          calBody += items[i].innerText;
           var event = {
-            'summary': items[i].innerText,
+            'summary': calBody,
             'start': {
               'dateTime': start
             },
