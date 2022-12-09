@@ -29,8 +29,8 @@ User Stories:<br />
 &emsp;As a user I should be able to select which google account I to use so that I get my reminders on my preferred email and calendar<br />
 
 Task:<br />
-&emsp;Finish UI: Everyone
-&emsp;Work on GMAIL API: John
-&emsp;Work on G Calendar API: Morgan
-&emsp;Work on the Weather and Time API: Marcus 
-&emsp;Presentation and General Work: Jason
+&emsp;Finish UI: Everyone<br />
+&emsp;Work on GMAIL API: John<br />
+&emsp;Work on G Calendar API: Morgan<br />
+&emsp;Work on the Weather and Time API: Marcus<br />
+&emsp;Presentation and General Work: Jason<br />
