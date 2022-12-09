@@ -2,14 +2,13 @@ CPSC 3720
 Advanced To Do List
 
 Members:
-    Marcus A Macias 
-    Jason S Senf
-    Nate J Mason
-    John E Mathews
-    Morgan P McClure
+- Marcus A Macias 
+- Jason S Senf
+- John E Mathews
+- Morgan P McClure
 
 Scope:
-	“For our project, we are not going to send a text to a phone due to those APIs not being free to use. Instead, our To-Do List will email the user and potentially update their Google Calendar as well. The general User Interface will have buttons to add an item to the list and buttons to remove items from the list when they are complete. Corresponding buttons for our APIs will exist.”
+&emsp;“For our project, we are not going to send a text to a phone due to those APIs not being free to use. Instead, our To-Do List will email the user and potentially update their Google Calendar as well. The general User Interface will have buttons to add an item to the list and buttons to remove items from the list when they are complete. Corresponding buttons for our APIs will exist.”
 
 User Stories: 
     As a user I should be able to add an item to my to-do list so that I can remember things I need to do
